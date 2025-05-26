@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functies Oefenspel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f8ff;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .correct {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .score {
+            text-align: center;
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #bdc3c7;
+            margin: 10px auto;
+            display: block;
+        }
+        .hidden {
+            display: none;
+        }
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: #bdc3c7;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .quiz-option:hover {
+            background: #95a5a6;
+        }
+        input[type="number"] {
+            padding: 5px;
+            font-size: 16px;
+            margin: 5px;
+            width: 80px;
+        }
+        .example-box {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+        .exercise-input {
+            padding: 8px;
+            margin: 5px;
+            font-size: 16px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+        }
+        table {
+            margin: 10px auto;
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: #3498db;
+            color: white;
+        }
+        .tip {
+            background: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Functies Leren - Maak je klaar voor je toets! 🎯</h1>
+        
+        <div class="score">Score: <span id="score">0</span> punten</div>
+        
+        <div id="menu" class="section">
+            <h2>Kies een onderwerp:</h2>
+            <button onclick="startQuadratic()">📊 Kwadratische functies (f(x) = ax²)</button>
+            <button onclick="startRational()">📈 Rationale functies (f(x) = c/x)</button>
+            <button onclick="startExercises()">✏️ Oefeningen uit je boek</button>
+            <button onclick="startWordProblems()">📝 Woordproblemen</button>
+            <button onclick="startQuiz()">❓ Grote Quiz - Test alles!</button>
+        </div>
+        
+        <div id="quadratic" class="section hidden">
+            <h2>Kwadratische functies: f(x) = ax²</h2>
+            
+            <div class="example-box">
+                <strong>💡 Simpel voorbeeld:</strong><br>
+                Stel je voor dat je een bal gooit:<br>
+                - Als a > 0: De bal valt naar beneden (dal ∪)<br>
+                - Als a < 0: De bal wordt omhoog gegooid (berg ∩)
+            </div>
+            
+            <canvas id="quadCanvas" width="400" height="400"></canvas>
+            
+            <div>
+                <label>Kies een waarde voor a: </label>
+                <input type="number" id="aValue" value="1" step="0.5" onchange="updateQuadratic()">
+                <button onclick="updateQuadratic()">Teken grafiek</button>
+            </div>
+            
+            <div id="quadInfo"></div>
+            
+            <div class="tip">
+                <strong>Onthoud deze trucjes:</strong><br>
+                • Nulwaarde is ALTIJD x = 0 (grafiek gaat door (0,0))<br>
+                • Als a > 0: eerst negatief (links), dan positief (rechts)<br>
+                • Als a < 0: eerst positief (links), dan negatief (rechts)
+            </div>
+            
+            <button onclick="showMenu()">Terug naar menu</button>
+        </div>
+        
+        <div id="rational" class="section hidden">
+            <h2>Rationale functies: f(x) = c/x</h2>
+            
+            <div class="example-box">
+                <strong>💡 Simpel voorbeeld:</strong><br>
+                Je hebt €12 om te delen:<br>
+                - 1 persoon krijgt €12<br>
+                - 2 personen krijgen elk €6<br>
+                - 4 personen krijgen elk €3<br>
+                Dit is f(x) = 12/x!
+            </div>
+            
+            <canvas id="ratCanvas" width="400" height="400"></canvas>
+            
+            <div>
+                <label>Kies een waarde voor c: </label>
+                <input type="number" id="cValue" value="2" step="1" onchange="updateRational()">
+                <button onclick="updateRational()">Teken grafiek</button>
+            </div>
+            
+            <div id="ratInfo"></div>
+            
+            <div class="tip">
+                <strong>Belangrijke eigenschappen:</strong><br>
+                • GEEN nulwaarde (raakt x-as nooit)<br>
+                • x = 0 bestaat niet (delen door 0 kan niet!)<br>
+                • Twee takken: een links, een rechts van y-as
+            </div>
+            
+            <button onclick="showMenu()">Terug naar menu</button>
+        </div>
+        
+        <div id="exercises" class="section hidden">
+            <h2>Oefeningen uit je boek 📚</h2>
+            
+            <div class="exercise-box">
+                <h3>Oefening 1: Functiewaarden berekenen</h3>
+                <p>Gegeven: f(x) = -3x²</p>
+                <p>Bereken f(2):</p>
+                <input type="number" id="ex1" class="exercise-input">
+                <button onclick="checkEx1()">Check</button>
+                <div id="ex1feedback"></div>
+                
+                <div class="example-box">
+                    <strong>Uitleg:</strong> f(2) betekent: vul x = 2 in<br>
+                    f(2) = -3 × 2² = -3 × 4 = -12
+                </div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 2: Moeilijker! g(x) = -5x²</h3>
+                <p>Bereken g(-3):</p>
+                <input type="number" id="ex2" class="exercise-input">
+                <button onclick="checkEx2()">Check</button>
+                <div id="ex2feedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 3: h(x) = 0.5x²</h3>
+                <p>Bereken h(4):</p>
+                <input type="number" id="ex3" class="exercise-input">
+                <button onclick="checkEx3()">Check</button>
+                <div id="ex3feedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 4: Tekenschema maken</h3>
+                <p>Voor f(x) = 2x², vul de tabel in:</p>
+                <table>
+                    <tr>
+                        <th>x</th>
+                        <th>-∞ ... 0</th>
+                        <th>0</th>
+                        <th>0 ... +∞</th>
+                    </tr>
+                    <tr>
+                        <td>f(x)</td>
+                        <td>
+                            <select id="sign1">
+                                <option value="">Kies</option>
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                            </select>
+                        </td>
+                        <td>0</td>
+                        <td>
+                            <select id="sign2">
+                                <option value="">Kies</option>
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <button onclick="checkSigns()">Check</button>
+                <div id="signfeedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 5: Tekenschema voor g(x) = -4x²</h3>
+                <table>
+                    <tr>
+                        <th>x</th>
+                        <th>-∞ ... 0</th>
+                        <th>0</th>
+                        <th>0 ... +∞</th>
+                    </tr>
+                    <tr>
+                        <td>g(x)</td>
+                        <td>
+                            <select id="sign3">
+                                <option value="">Kies</option>
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                            </select>
+                        </td>
+                        <td>0</td>
+                        <td>
+                            <select id="sign4">
+                                <option value="">Kies</option>
+                                <option value="+">+</option>
+                                <option value="-">-</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <button onclick="checkSigns2()">Check</button>
+                <div id="signfeedback2"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 6: Nulwaarden vinden</h3>
+                <p>Hoeveel nulwaarden heeft f(x) = 5/x?</p>
+                <select id="zeros">
+                    <option value="">Kies</option>
+                    <option value="0">0 (geen)</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+                <button onclick="checkZeros()">Check</button>
+                <div id="zerosfeedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 7: Domein en bereik</h3>
+                <p>Voor f(x) = 3x², wat is het bereik?</p>
+                <select id="range1">
+                    <option value="">Kies</option>
+                    <option value="1">[0, +∞[</option>
+                    <option value="2">]-∞, 0]</option>
+                    <option value="3">ℝ (alle getallen)</option>
+                    <option value="4">ℝ₀</option>
+                </select>
+                <button onclick="checkRange1()">Check</button>
+                <div id="range1feedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 8: Verloop bepalen</h3>
+                <p>Voor f(x) = -2x², de functie is:</p>
+                <div>
+                    <label><input type="checkbox" id="inc1"> Stijgend voor x < 0</label><br>
+                    <label><input type="checkbox" id="dec1"> Dalend voor x < 0</label><br>
+                    <label><input type="checkbox" id="inc2"> Stijgend voor x > 0</label><br>
+                    <label><input type="checkbox" id="dec2"> Dalend voor x > 0</label>
+                </div>
+                <button onclick="checkVerloop()">Check</button>
+                <div id="verloopfeedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Oefening 9: Grafiek herkennen</h3>
+                <p>Welke functie hoort bij een dal (∪)?</p>
+                <select id="dalberg">
+                    <option value="">Kies</option>
+                    <option value="1">f(x) = 3x²</option>
+                    <option value="2">f(x) = -3x²</option>
+                    <option value="3">f(x) = 3/x</option>
+                </select>
+                <button onclick="checkDalBerg()">Check</button>
+                <div id="dalbergfeedback"></div>
+            </div>
+            
+            <button onclick="showMenu()">Terug naar menu</button>
+        </div>
+        
+        <div id="wordproblems" class="section hidden">
+            <h2>Woordproblemen 🧩</h2>
+            
+            <div class="exercise-box">
+                <h3>Probleem 1: Rechthoek</h3>
+                <p>De oppervlakte van een rechthoek is 50 cm². De hoogte h (in cm) hangt af van de breedte b volgens:</p>
+                <p><strong>h = 50/b</strong></p>
+                
+                <p>Als de breedte 10 cm is, wat is dan de hoogte?</p>
+                <input type="number" id="rect1" class="exercise-input"> cm
+                <button onclick="checkRect()">Check</button>
+                <div id="rectfeedback"></div>
+                
+                <div class="tip">
+                    Tip: Vul b = 10 in de formule in!
+                </div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Probleem 2: Vul de tabel aan</h3>
+                <p>Voor dezelfde rechthoek (h = 50/b), vul de tabel aan:</p>
+                <table>
+                    <tr>
+                        <th>b (cm)</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>5</th>
+                        <th>25</th>
+                    </tr>
+                    <tr>
+                        <td>h (cm)</td>
+                        <td><input type="number" id="t1" style="width:50px"></td>
+                        <td><input type="number" id="t2" style="width:50px"></td>
+                        <td><input type="number" id="t3" style="width:50px"></td>
+                        <td><input type="number" id="t4" style="width:50px"></td>
+                    </tr>
+                </table>
+                <button onclick="checkTable()">Check tabel</button>
+                <div id="tablefeedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Probleem 3: Merlijn's motorrit</h3>
+                <p>De remweg r (in meter) hangt af van de snelheid v (in m/s):</p>
+                <p><strong>r = v²/16</strong></p>
+                
+                <p>Bij welke snelheid is de remweg 4 meter?</p>
+                <input type="number" id="speed" class="exercise-input"> m/s
+                <button onclick="checkSpeed()">Check</button>
+                <div id="speedfeedback"></div>
+                
+                <div class="example-box">
+                    <strong>Stappenplan:</strong><br>
+                    1. Vul r = 4 in: 4 = v²/16<br>
+                    2. Vermenigvuldig met 16: 64 = v²<br>
+                    3. Neem de wortel: v = 8
+                </div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Probleem 4: Merlijn rijdt sneller!</h3>
+                <p>Als Merlijn met 20 m/s rijdt, wat is dan zijn remweg?</p>
+                <input type="number" id="brake" class="exercise-input"> meter
+                <button onclick="checkBrake()">Check</button>
+                <div id="brakefeedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Probleem 5: Vierkant oppervlakte</h3>
+                <p>De oppervlakte A van een vierkant met zijde z is: A = z²</p>
+                <p>Een vierkant heeft oppervlakte 64 cm². Wat is de zijde?</p>
+                <input type="number" id="square" class="exercise-input"> cm
+                <button onclick="checkSquare()">Check</button>
+                <div id="squarefeedback"></div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Probleem 6: Omgekeerd evenredig</h3>
+                <p>12 arbeiders doen 6 dagen over een klus. Het aantal dagen d hangt af van het aantal arbeiders a volgens: d = 72/a</p>
+                <p>Hoeveel dagen doen 8 arbeiders erover?</p>
+                <input type="number" id="workers" class="exercise-input"> dagen
+                <button onclick="checkWorkers()">Check</button>
+                <div id="workersfeedback"></div>
+                
+                <div class="tip">
+                    Tip: Meer arbeiders = minder dagen!
+                </div>
+            </div>
+            
+            <div class="exercise-box">
+                <h3>Probleem 7: Uitdaging! 🏆</h3>
+                <p>Een bedrijf maakt verlies. Het verlies V (in €) hangt af van de productie x volgens:</p>
+                <p><strong>V(x) = x² - 10x + 25</strong></p>
+                <p>Bij welke productie is het verlies 0? (Hint: los op V(x) = 0)</p>
+                <input type="number" id="challenge" class="exercise-input">
+                <button onclick="checkChallenge()">Check</button>
+                <div id="challengefeedback"></div>
+                
+                <details>
+                    <summary>Hulp nodig?</summary>
+                    <p>x² - 10x + 25 = 0<br>
+                    Dit is (x - 5)² = 0<br>
+                    Dus x - 5 = 0...</p>
+                </details>
+            </div>
+            
+            <button onclick="showMenu()">Terug naar menu</button>
+        </div>
+        
+        <div id="quiz" class="section hidden">
+            <h2>Grote Quiz! 🧠</h2>
+            <div class="example-box">
+                <strong>20 vragen om je kennis te testen!</strong> Elke vraag is 5 punten waard.
+            </div>
+            <div id="question"></div>
+            <div id="options"></div>
+            <div id="feedback"></div>
+            <button onclick="nextQuestion()">Volgende vraag</button>
+            <button onclick="resetQuiz()">Quiz opnieuw beginnen</button>
+            <button onclick="showMenu()">Terug naar menu</button>
+        </div>
+    </div>
+    
+    <script>
+        let score = 0;
+        let currentQuestion = 0;
+        
+        const questions = [
+            {
+                q: "Als f(x) = 2x², is de grafiek een...",
+                options: ["Dal (∪)", "Berg (∩)", "Rechte lijn", "Hyperbool"],
+                correct: 0
+            },
+            {
+                q: "Als f(x) = -3x², wat is f(2)?",
+                options: ["-12", "12", "-6", "6"],
+                correct: 0
+            },
+            {
+                q: "De functie f(x) = 1/x heeft een nulwaarde bij...",
+                options: ["x = 0", "x = 1", "Geen nulwaarde", "x = -1"],
+                correct: 2
+            },
+            {
+                q: "Als a < 0 in f(x) = ax², dan is de parabool een...",
+                options: ["Dal", "Berg", "Hyperbool", "Lijn"],
+                correct: 1
+            },
+            {
+                q: "Voor f(x) = 4x², wat is het minimum?",
+                options: ["0", "4", "-4", "Geen minimum"],
+                correct: 0
+            },
+            {
+                q: "Het domein van f(x) = 3/x is...",
+                options: ["Alle reële getallen", "ℝ₀ (alle reële behalve 0)", "Alleen positief", "Alleen negatief"],
+                correct: 1
+            },
+            {
+                q: "Als f(x) = x²/4, wat is f(4)?",
+                options: ["1", "2", "4", "16"],
+                correct: 2
+            },
+            {
+                q: "Een hyperbool hoort bij welke functie?",
+                options: ["f(x) = ax", "f(x) = ax²", "f(x) = c/x", "f(x) = a"],
+                correct: 2
+            },
+            {
+                q: "Voor f(x) = -x², wat is f(-5)?",
+                options: ["25", "-25", "5", "-5"],
+                correct: 1
+            },
+            {
+                q: "Als f(x) = 6/x, wat is f(2)?",
+                options: ["12", "3", "6", "2"],
+                correct: 1
+            },
+            {
+                q: "Het bereik van f(x) = -2x² is...",
+                options: ["[0, +∞[", "]-∞, 0]", "ℝ", "ℝ₀"],
+                correct: 1
+            },
+            {
+                q: "Voor f(x) = 0.5x², de grafiek gaat door punt...",
+                options: ["(2, 2)", "(2, 4)", "(0, 0)", "(1, 2)"],
+                correct: 2
+            },
+            {
+                q: "Als f(x) = x² - 9, wat is de nulwaarde?",
+                options: ["x = 3", "x = -3", "x = 3 of x = -3", "Geen nulwaarde"],
+                correct: 2
+            },
+            {
+                q: "Voor f(x) = 12/x, als x verdubbelt, dan wordt f(x)...",
+                options: ["2× zo groot", "2× zo klein", "4× zo groot", "Blijft gelijk"],
+                correct: 1
+            },
+            {
+                q: "Een parabool met top (0,0) en a = -1 heeft als maximum...",
+                options: ["0", "1", "-1", "Geen maximum"],
+                correct: 0
+            },
+            {
+                q: "Als f(x) = ax² door punt (2, 8) gaat, wat is a?",
+                options: ["1", "2", "4", "8"],
+                correct: 1
+            },
+            {
+                q: "Voor g(x) = -3x² + 3x + 3, wat is g(0)?",
+                options: ["0", "3", "-3", "6"],
+                correct: 1
+            },
+            {
+                q: "De functie f(x) = 100/x, voor welke x is f(x) = 25?",
+                options: ["x = 4", "x = 25", "x = 100", "x = 2500"],
+                correct: 0
+            },
+            {
+                q: "Als f(x) = 2x² stijgend is, dan geldt:",
+                options: ["x > 0", "x < 0", "x = 0", "Altijd stijgend"],
+                correct: 0
+            },
+            {
+                q: "Het verschil tussen f(x) = x² en g(x) = -x² is dat...",
+                options: ["f is dal, g is berg", "f is berg, g is dal", "Beide zijn dal", "Beide zijn berg"],
+                correct: 0
+            }
+        ];
+        
+        function updateScore(points) {
+            score += points;
+            document.getElementById('score').textContent = score;
+        }
+        
+        function showMenu() {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('menu').classList.remove('hidden');
+        }
+        
+        function startQuadratic() {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('quadratic').classList.remove('hidden');
+            updateQuadratic();
+        }
+        
+        function startRational() {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('rational').classList.remove('hidden');
+            updateRational();
+        }
+        
+        function startExercises() {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('exercises').classList.remove('hidden');
+        }
+        
+        function startWordProblems() {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('wordproblems').classList.remove('hidden');
+        }
+        
+        function startQuiz() {
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('quiz').classList.remove('hidden');
+            currentQuestion = 0;
+            showQuestion();
+        }
+        
+        function drawAxes(ctx, width, height) {
+            ctx.strokeStyle = '#34495e';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, height/2);
+            ctx.lineTo(width, height/2);
+            ctx.moveTo(width/2, 0);
+            ctx.lineTo(width/2, height);
+            ctx.stroke();
+            
+            ctx.strokeStyle = '#ecf0f1';
+            ctx.lineWidth = 1;
+            for(let i = 0; i < width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, height);
+                ctx.stroke();
+            }
+            for(let i = 0; i < height; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(width, i);
+                ctx.stroke();
+            }
+        }
+        
+        function updateQuadratic() {
+            const a = parseFloat(document.getElementById('aValue').value);
+            const canvas = document.getElementById('quadCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, 400, 400);
+            drawAxes(ctx, 400, 400);
+            
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            for(let px = 0; px < 400; px++) {
+                const x = (px - 200) / 40;
+                const y = a * x * x;
+                const py = 200 - y * 40;
+                
+                if(px === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+            
+            const info = document.getElementById('quadInfo');
+            info.innerHTML = `
+                <p><strong>Functie:</strong> f(x) = ${a}x²</p>
+                <p><strong>Type:</strong> ${a > 0 ? 'Dal (∪) - minimum bij x=0' : 'Berg (∩) - maximum bij x=0'}</p>
+                <p><strong>Nulwaarde:</strong> x = 0</p>
+                <p><strong>Domein:</strong> ℝ (alle reële getallen)</p>
+                <p><strong>Bereik:</strong> ${a > 0 ? '[0, +∞[' : ']-∞, 0]'}</p>
+            `;
+            
+            if(a !== 0) updateScore(1);
+        }
+        
+        function updateRational() {
+            const c = parseFloat(document.getElementById('cValue').value);
+            const canvas = document.getElementById('ratCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, 400, 400);
+            drawAxes(ctx, 400, 400);
+            
+            ctx.strokeStyle = '#9b59b6';
+            ctx.lineWidth = 3;
+            
+            ctx.beginPath();
+            for(let px = 201; px < 400; px++) {
+                const x = (px - 200) / 40;
+                if(x > 0.1) {
+                    const y = c / x;
+                    const py = 200 - y * 40;
+                    if(px === 201) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+            }
+            ctx.stroke();
+            
+            ctx.beginPath();
+            for(let px = 0; px < 199; px++) {
+                const x = (px - 200) / 40;
+                if(x < -0.1) {
+                    const y = c / x;
+                    const py = 200 - y * 40;
+                    if(px === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+            }
+            ctx.stroke();
+            
+            const info = document.getElementById('ratInfo');
+            info.innerHTML = `
+                <p><strong>Functie:</strong> f(x) = ${c}/x</p>
+                <p><strong>Type:</strong> Hyperbool</p>
+                <p><strong>Nulwaarde:</strong> GEEN! (f heeft geen nulwaarden)</p>
+                <p><strong>Domein:</strong> ℝ₀ (alle reële getallen behalve 0)</p>
+                <p><strong>Bereik:</strong> ℝ₀ (alle reële getallen behalve 0)</p>
+            `;
+            
+            if(c !== 0) updateScore(1);
+        }
+        
+        function checkEx1() {
+            const answer = parseFloat(document.getElementById('ex1').value);
+            const feedback = document.getElementById('ex1feedback');
+            
+            if(answer === -12) {
+                feedback.innerHTML = '<p class="correct">Perfect! f(2) = -3 × 2² = -3 × 4 = -12 ✅</p>';
+                updateScore(5);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Nog niet goed. Denk eraan: f(2) = -3 × 2² = -3 × 4 = ?</p>';
+            }
+        }
+        
+        function checkEx2() {
+            const answer = parseFloat(document.getElementById('ex2').value);
+            const feedback = document.getElementById('ex2feedback');
+            
+            if(answer === -45) {
+                feedback.innerHTML = '<p class="correct">Super! g(-3) = -5 × (-3)² = -5 × 9 = -45 ✅</p>';
+                updateScore(7);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Let op: (-3)² = 9, dus g(-3) = -5 × 9 = ?</p>';
+            }
+        }
+        
+        function checkEx3() {
+            const answer = parseFloat(document.getElementById('ex3').value);
+            const feedback = document.getElementById('ex3feedback');
+            
+            if(answer === 8) {
+                feedback.innerHTML = '<p class="correct">Goed! h(4) = 0.5 × 4² = 0.5 × 16 = 8 ✅</p>';
+                updateScore(7);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Probeer nog eens: h(4) = 0.5 × 4² = 0.5 × 16 = ?</p>';
+            }
+        }
+        
+        function checkSigns() {
+            const sign1 = document.getElementById('sign1').value;
+            const sign2 = document.getElementById('sign2').value;
+            const feedback = document.getElementById('signfeedback');
+            
+            if(sign1 === '+' && sign2 === '+') {
+                feedback.innerHTML = '<p class="correct">Uitstekend! Bij a > 0 is de parabool een dal, dus altijd positief (behalve bij x=0) ✅</p>';
+                updateScore(5);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Denk na: een dal (∪) ligt boven de x-as, dus f(x) > 0</p>';
+            }
+        }
+        
+        function checkSigns2() {
+            const sign3 = document.getElementById('sign3').value;
+            const sign4 = document.getElementById('sign4').value;
+            const feedback = document.getElementById('signfeedback2');
+            
+            if(sign3 === '-' && sign4 === '-') {
+                feedback.innerHTML = '<p class="correct">Geweldig! Bij a < 0 is het een berg, dus altijd negatief (behalve bij x=0) ✅</p>';
+                updateScore(7);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Denk na: een berg (∩) ligt onder de x-as, dus g(x) < 0</p>';
+            }
+        }
+        
+        function checkZeros() {
+            const answer = document.getElementById('zeros').value;
+            const feedback = document.getElementById('zerosfeedback');
+            
+            if(answer === '0') {
+                feedback.innerHTML = '<p class="correct">Klopt! f(x) = 5/x heeft GEEN nulwaarden (raakt x-as nooit) ✅</p>';
+                updateScore(5);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Denk na: wanneer is 5/x = 0? Dat kan nooit!</p>';
+            }
+        }
+        
+        function checkRange1() {
+            const answer = document.getElementById('range1').value;
+            const feedback = document.getElementById('range1feedback');
+            
+            if(answer === '1') {
+                feedback.innerHTML = '<p class="correct">Precies! Bij a > 0 is het minimum 0, dus bereik is [0, +∞[ ✅</p>';
+                updateScore(8);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Tip: een dal heeft een minimum bij y = 0</p>';
+            }
+        }
+        
+        function checkVerloop() {
+            const inc1 = document.getElementById('inc1').checked;
+            const dec1 = document.getElementById('dec1').checked;
+            const inc2 = document.getElementById('inc2').checked;
+            const dec2 = document.getElementById('dec2').checked;
+            const feedback = document.getElementById('verloopfeedback');
+            
+            if(inc1 && !dec1 && !inc2 && dec2) {
+                feedback.innerHTML = '<p class="correct">Perfect! Berg stijgt links van 0, daalt rechts van 0 ✅</p>';
+                updateScore(10);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Denk aan een berg: klimt omhoog, dan naar beneden</p>';
+            }
+        }
+        
+        function checkDalBerg() {
+            const answer = document.getElementById('dalberg').value;
+            const feedback = document.getElementById('dalbergfeedback');
+            
+            if(answer === '1') {
+                feedback.innerHTML = '<p class="correct">Juist! a = 3 > 0, dus dal (∪) ✅</p>';
+                updateScore(6);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Onthoud: a > 0 → dal, a < 0 → berg</p>';
+            }
+        }
+        
+        function checkRect() {
+            const answer = parseFloat(document.getElementById('rect1').value);
+            const feedback = document.getElementById('rectfeedback');
+            
+            if(answer === 5) {
+                feedback.innerHTML = '<p class="correct">Goed! h = 50/10 = 5 cm ✅</p>';
+                updateScore(5);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Probeer nog eens: h = 50/b, dus h = 50/10 = ?</p>';
+            }
+        }
+        
+        function checkTable() {
+            const t1 = parseFloat(document.getElementById('t1').value);
+            const t2 = parseFloat(document.getElementById('t2').value);
+            const t3 = parseFloat(document.getElementById('t3').value);
+            const t4 = parseFloat(document.getElementById('t4').value);
+            const feedback = document.getElementById('tablefeedback');
+            
+            if(t1 === 50 && t2 === 25 && t3 === 10 && t4 === 2) {
+                feedback.innerHTML = '<p class="correct">Perfect! Je begrijpt de formule helemaal! ✅</p>';
+                updateScore(10);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Check je antwoorden: h = 50/b voor elke waarde</p>';
+            }
+        }
+        
+        function checkSpeed() {
+            const answer = parseFloat(document.getElementById('speed').value);
+            const feedback = document.getElementById('speedfeedback');
+            
+            if(answer === 8) {
+                feedback.innerHTML = '<p class="correct">Super! 4 = v²/16 → v² = 64 → v = 8 m/s ✅</p>';
+                updateScore(5);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Volg de stappen: 4 = v²/16. Eerst × 16...</p>';
+            }
+        }
+        
+        function checkBrake() {
+            const answer = parseFloat(document.getElementById('brake').value);
+            const feedback = document.getElementById('brakefeedback');
+            
+            if(answer === 25) {
+                feedback.innerHTML = '<p class="correct">Uitstekend! r = 20²/16 = 400/16 = 25 meter ✅</p>';
+                updateScore(8);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Bereken: r = 20²/16 = ?</p>';
+            }
+        }
+        
+        function checkSquare() {
+            const answer = parseFloat(document.getElementById('square').value);
+            const feedback = document.getElementById('squarefeedback');
+            
+            if(answer === 8) {
+                feedback.innerHTML = '<p class="correct">Goed zo! Als z² = 64, dan z = 8 cm ✅</p>';
+                updateScore(7);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Denk na: welk getal × zichzelf = 64?</p>';
+            }
+        }
+        
+        function checkWorkers() {
+            const answer = parseFloat(document.getElementById('workers').value);
+            const feedback = document.getElementById('workersfeedback');
+            
+            if(answer === 9) {
+                feedback.innerHTML = '<p class="correct">Knap! d = 72/8 = 9 dagen ✅</p>';
+                updateScore(9);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Gebruik de formule: d = 72/a met a = 8</p>';
+            }
+        }
+        
+        function checkChallenge() {
+            const answer = parseFloat(document.getElementById('challenge').value);
+            const feedback = document.getElementById('challengefeedback');
+            
+            if(answer === 5) {
+                feedback.innerHTML = '<p class="correct">Fantastisch! x = 5 is de oplossing! Je bent klaar voor de toets! 🏆✅</p>';
+                updateScore(15);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Kijk naar de hint: (x - 5)² = 0 betekent x - 5 = 0</p>';
+            }
+        }
+        
+        function showQuestion() {
+            if(currentQuestion >= questions.length) {
+                document.getElementById('question').innerHTML = '<h3>🎉 Quiz voltooid! Je hebt alle vragen beantwoord!</h3>';
+                document.getElementById('options').innerHTML = '';
+                document.getElementById('feedback').innerHTML = '<p class="correct">Geweldig gedaan! Je bent klaar voor de toets!</p>';
+                return;
+            }
+            
+            const q = questions[currentQuestion];
+            document.getElementById('question').innerHTML = `<h3>Vraag ${currentQuestion + 1} van ${questions.length}: ${q.q}</h3>`;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(i);
+                optionsDiv.appendChild(btn);
+            });
+            
+            document.getElementById('feedback').innerHTML = '';
+        }
+        
+        function checkAnswer(selected) {
+            const q = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            
+            if(selected === q.correct) {
+                feedback.innerHTML = '<p class="correct">Goed zo! 🎉</p>';
+                updateScore(5);
+            } else {
+                feedback.innerHTML = '<p class="incorrect">Helaas, probeer het nog eens! 💪</p>';
+            }
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            showQuestion();
+        }
+        
+        function resetQuiz() {
+            currentQuestion = 0;
+            showQuestion();
+        }
+    </script>
+</body>
+</html>
