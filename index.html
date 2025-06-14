@@ -378,6 +378,33 @@
             📝 <strong>GEBRUIK PAPIER:</strong> Maak tabellen, grafieken en berekeningen op papier - net zoals op het examen!
         </div>
 
+        <div class="formatting-guide" style="background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+            <h3 style="color: #2d3748; margin-bottom: 15px;">📝 Antwoord Formatting - LET OP!</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h4 style="color: #4299e1;">✅ GOED:</h4>
+                    <ul style="color: #2f855a; line-height: 1.6;">
+                        <li><strong>Variabelen:</strong> "aantal personen" (volledig)</li>
+                        <li><strong>Functies:</strong> k(p) = 8p + 150</li>
+                        <li><strong>Vermenigvuldiging:</strong> 8p of 8 × p</li>
+                        <li><strong>Decimalen:</strong> 3,5 (komma!)</li>
+                        <li><strong>Eenheden:</strong> €12,50 of 15 meter</li>
+                        <li><strong>Intervallen:</strong> [0, 24] of (0, 24)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #e53e3e;">❌ FOUT:</h4>
+                    <ul style="color: #c53030; line-height: 1.6;">
+                        <li><strong>Te kort:</strong> "persoon" of "p"</li>
+                        <li><strong>Onduidelijk:</strong> 8 × 150 (verkeerd!)</li>
+                        <li><strong>Punt:</strong> 3.5 (Amerikaanse stijl)</li>
+                        <li><strong>Geen eenheid:</strong> gewoon "12,50"</li>
+                        <li><strong>Slordig:</strong> "tussen 0 en 24"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div class="progress-container">
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -426,15 +453,22 @@
                         • Wat kun je zelf kiezen/bepalen in deze situatie?<br>
                         • Wat gebeurt er automatisch als gevolg van jouw keuze?<br>
                         • Welke variabele is de OORZAAK en welke het GEVOLG?
+                    </div>
+
+                    <div class="warning" style="background: #fef5e7; border: 2px solid #d69e2e; color: #d69e2e; padding: 10px; border-radius: 6px; margin: 10px 0;">
+                        <strong>LET OP FORMATTING:</strong><br>
+                        • Variabelen: volledig uitschrijven ("aantal personen", niet "personen")<br>
+                        • Functies: k(p) = 8p + 150 (gebruik p als variabele, niet ×)<br>
+                        • Eenheden: waar nodig vermelden
                     </div>`,
                     parts: [
-                        "Wat is de onafhankelijke variabele?",
-                        "Wat is de afhankelijke variabele?", 
-                        "Schrijf de functie k(p) = ..."
+                        "Wat is de onafhankelijke variabele? (volledig uitschrijven)",
+                        "Wat is de afhankelijke variabele? (volledig uitschrijven)", 
+                        "Schrijf de functie k(p) = ... (gebruik p als variabele)"
                     ],
                     type: "multi_input",
-                    answers: ["aantal personen", "kosten", "8p + 150"],
-                    hint: "De onafhankelijke variabele is wat JIJ beslist. De afhankelijke variabele hangt af van jouw beslissing."
+                    answers: ["aantal personen", "totale kosten", "8p + 150"],
+                    hint: "De onafhankelijke variabele is wat JIJ beslist. De afhankelijke variabele hangt af van jouw beslissing. Check je formatting!"
                 },
                 {
                     title: "Functienotatie en Berekeningen",
@@ -848,6 +882,7 @@
             
             let userAnswers = [];
             let allCorrect = true;
+            let formattingIssues = [];
             
             if (exercise.type === 'multi_input') {
                 exercise.parts.forEach((_, index) => {
@@ -856,23 +891,50 @@
                     const correctAnswer = exercise.answers[index].toLowerCase();
                     userAnswers.push(userAnswer);
                     
-                    if (userAnswer !== correctAnswer) {
-                        allCorrect = false;
-                        input.style.borderColor = '#e53e3e';
-                    } else {
+                    // Check for exact match first
+                    if (userAnswer === correctAnswer) {
                         input.style.borderColor = '#38a169';
+                    } else {
+                        // Check for common acceptable variations
+                        let isAcceptable = false;
+                        
+                        // For variables, accept some variations but note formatting
+                        if (correctAnswer === "aantal personen") {
+                            if (userAnswer === "personen" || userAnswer === "persoon") {
+                                isAcceptable = true;
+                                formattingIssues.push(`Antwoord ${index + 1}: schrijf voluit "aantal personen" in plaats van "${userAnswer}"`);
+                            }
+                        }
+                        
+                        // For functions, accept variations like 8*p+150, 8 × p + 150, etc.
+                        if (correctAnswer.includes("8p + 150")) {
+                            const variations = ["8*p+150", "8×p+150", "8 × p + 150", "8*p + 150", "150 + 8p", "150+8p"];
+                            if (variations.includes(userAnswer)) {
+                                isAcceptable = true;
+                                if (userAnswer !== "8p + 150") {
+                                    formattingIssues.push(`Antwoord ${index + 1}: schrijf liever "8p + 150" (zonder × of *)`);
+                                }
+                            }
+                        }
+                        
+                        if (isAcceptable) {
+                            input.style.borderColor = '#d69e2e'; // Orange for acceptable but not perfect
+                        } else {
+                            allCorrect = false;
+                            input.style.borderColor = '#e53e3e'; // Red for wrong
+                        }
                     }
                 });
             } else if (exercise.type === 'multiple') {
                 allCorrect = selectedAnswer === exercise.answer;
             }
             
-            if (allCorrect) {
+            if (allCorrect && formattingIssues.length === 0) {
                 feedback.className = 'feedback correct';
                 feedback.innerHTML = `
-                    <strong>🎉 Excellent! Volledig correct!</strong><br>
+                    <strong>🎉 Perfect! Inhoud EN formatting correct!</strong><br>
                     Je hebt dit in ${attempts} poging${attempts > 1 ? 'en' : ''} opgelost. 
-                    ${attempts === 1 ? 'Perfect - eerste keer goed!' : 'Goed blijven proberen!'}
+                    ${attempts === 1 ? 'Uitstekend - eerste keer helemaal goed!' : 'Goed blijven proberen!'}
                 `;
                 feedback.style.display = 'block';
                 
@@ -881,12 +943,25 @@
                 document.getElementById('hintBtn').style.display = 'none';
                 document.getElementById('giveUpBtn').style.display = 'none';
                 
+            } else if (allCorrect && formattingIssues.length > 0) {
+                feedback.className = 'feedback thinking';
+                feedback.innerHTML = `
+                    <strong>✅ Inhoud is goed, maar let op formatting:</strong><br>
+                    ${formattingIssues.map(issue => `• ${issue}`).join('<br>')}<br><br>
+                    <em>Op het examen kun je punten verliezen door slordig antwoorden!</em>
+                `;
+                feedback.style.display = 'block';
+                
+                document.getElementById('checkBtn').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                
             } else {
                 feedback.className = 'feedback incorrect';
                 feedback.innerHTML = `
                     <strong>❌ Niet helemaal goed.</strong><br>
                     ${exercise.type === 'multi_input' ? 'Controleer de delen met een rode rand.' : 'Probeer opnieuw.'}
-                    <br><em>Denk stap voor stap na en controleer je berekeningen.</em>
+                    ${formattingIssues.length > 0 ? '<br><strong>Ook formatting issues:</strong><br>' + formattingIssues.map(issue => `• ${issue}`).join('<br>') : ''}
+                    <br><em>Denk stap voor stap na en controleer je berekeningen én formatting.</em>
                 `;
                 feedback.style.display = 'block';
                 
