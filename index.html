@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Functies Examentraining</title>
+    <title>Functies Examentraining - Realistische Stijl</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -39,9 +39,24 @@
             font-size: 2.2em;
         }
 
-        .header p {
-            color: #666;
-            font-size: 1.1em;
+        .warning {
+            background: #fed7d7;
+            border: 2px solid #e53e3e;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .paper-reminder {
+            background: #f0fff4;
+            border: 2px solid #38a169;
+            color: #2f855a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
         }
 
         .progress-container {
@@ -85,13 +100,13 @@
 
         .level-buttons {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
 
         .level-btn {
-            padding: 15px 20px;
+            padding: 18px 20px;
             border: none;
             border-radius: 8px;
             font-size: 1.1em;
@@ -101,10 +116,10 @@
             color: white;
         }
 
-        .level-btn.intro { background: linear-gradient(45deg, #3182ce, #2b77cb); }
-        .level-btn.easy { background: linear-gradient(45deg, #38a169, #2f855a); }
-        .level-btn.medium { background: linear-gradient(45deg, #d69e2e, #b7791f); }
-        .level-btn.hard { background: linear-gradient(45deg, #e53e3e, #c53030); }
+        .level-btn.basis { background: linear-gradient(45deg, #3182ce, #2b77cb); }
+        .level-btn.analyse { background: linear-gradient(45deg, #38a169, #2f855a); }
+        .level-btn.toepassing { background: linear-gradient(45deg, #d69e2e, #b7791f); }
+        .level-btn.expert { background: linear-gradient(45deg, #e53e3e, #c53030); }
 
         .level-btn:hover {
             transform: translateY(-2px);
@@ -113,7 +128,7 @@
 
         .exercise-container {
             background: rgba(255, 255, 255, 0.95);
-            padding: 25px;
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             margin-bottom: 20px;
@@ -124,36 +139,62 @@
             display: block;
         }
 
+        .exercise-number {
+            background: #4299e1;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
         .exercise-title {
             color: #2d3748;
-            font-size: 1.4em;
-            margin-bottom: 15px;
+            font-size: 1.5em;
+            margin-bottom: 20px;
             font-weight: bold;
         }
 
         .exercise-content {
-            line-height: 1.6;
-            margin-bottom: 20px;
+            line-height: 1.7;
+            margin-bottom: 25px;
             font-size: 1.1em;
         }
 
         .math-expression {
             background: #f7fafc;
-            padding: 10px 15px;
+            padding: 15px 20px;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
-            font-size: 1.2em;
-            margin: 10px 0;
+            font-size: 1.3em;
+            margin: 15px 0;
             border-left: 4px solid #4299e1;
+            text-align: center;
+        }
+
+        .question-parts {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4a5568;
+        }
+
+        .part {
+            margin-bottom: 15px;
+            font-weight: bold;
         }
 
         .answer-input {
             width: 100%;
+            max-width: 400px;
             padding: 12px;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             font-size: 1.1em;
-            margin-bottom: 15px;
+            margin: 10px 0;
             transition: border-color 0.3s ease;
         }
 
@@ -164,15 +205,16 @@
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
+            margin-top: 25px;
         }
 
         .btn {
-            padding: 12px 20px;
+            padding: 15px 25px;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -193,15 +235,20 @@
             color: #4a5568;
         }
 
+        .btn.danger {
+            background: linear-gradient(45deg, #e53e3e, #c53030);
+            color: white;
+        }
+
         .btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
         .feedback {
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 20px;
             font-weight: bold;
             display: none;
         }
@@ -218,28 +265,60 @@
             border: 2px solid #e53e3e;
         }
 
-        .explanation {
-            background: #edf2f7;
-            padding: 15px;
+        .feedback.thinking {
+            background: #fef5e7;
+            color: #d69e2e;
+            border: 2px solid #d69e2e;
+        }
+
+        .table-exercise {
+            background: white;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            margin-top: 10px;
-            border-left: 4px solid #4299e1;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .example-table th, .example-table td {
+            border: 1px solid #cbd5e0;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .example-table th {
+            background: #f7fafc;
+            font-weight: bold;
+        }
+
+        .graph-instruction {
+            background: #e6fffa;
+            border: 2px solid #38b2ac;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
         }
 
         .multiple-choice {
             display: grid;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 12px;
+            margin: 20px 0;
         }
 
         .choice-btn {
-            padding: 12px 15px;
+            padding: 15px 20px;
             border: 2px solid #e2e8f0;
             background: white;
             border-radius: 8px;
             text-align: left;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 1.1em;
         }
 
         .choice-btn:hover {
@@ -252,43 +331,21 @@
             background: #ebf8ff;
         }
 
-        .graph-container {
-            background: white;
-            border: 1px solid #e2e8f0;
+        .hint-box {
+            background: #fffaf0;
+            border: 2px solid #d69e2e;
+            padding: 15px;
             border-radius: 8px;
-            padding: 20px;
             margin: 15px 0;
-            text-align: center;
+            display: none;
         }
 
-        .coordinates-grid {
-            display: inline-block;
-            background: 
-                linear-gradient(to right, #f1f5f9 1px, transparent 1px),
-                linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
-            background-size: 20px 20px;
-            border: 2px solid #cbd5e0;
+        .thinking-questions {
+            background: #f0f4f8;
             padding: 20px;
-            position: relative;
-        }
-
-        .axis {
-            position: absolute;
-            background: #4a5568;
-        }
-
-        .axis.x-axis {
-            height: 2px;
-            width: 100%;
-            top: 50%;
-            left: 0;
-        }
-
-        .axis.y-axis {
-            width: 2px;
-            height: 100%;
-            left: 50%;
-            top: 0;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4299e1;
         }
 
         @media (max-width: 768px) {
@@ -309,8 +366,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧮 Functies Examentraining</h1>
-            <p>Bereid je voor op je eindexamen met interactieve oefeningen!</p>
+            <h1>📚 Examentraining Functies</h1>
+            <p><strong>Echte examenstijl - Geen hulp, alleen denken!</strong></p>
+        </div>
+
+        <div class="warning">
+            ⚠️ <strong>BELANGRIJKE REGEL:</strong> Net als op het echte examen krijg je GEEN antwoorden! Je moet zelf redeneren en controleren.
+        </div>
+
+        <div class="paper-reminder">
+            📝 <strong>GEBRUIK PAPIER:</strong> Maak tabellen, grafieken en berekeningen op papier - net zoals op het examen!
         </div>
 
         <div class="progress-container">
@@ -318,29 +383,32 @@
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="stats">
-                <span>Voortgang: <span id="currentScore">0</span>/<span id="totalQuestions">0</span></span>
+                <span>Oefening: <span id="currentExercise">0</span>/<span id="totalExercises">0</span></span>
                 <span>Niveau: <span id="currentLevel">Kies een niveau</span></span>
             </div>
         </div>
 
         <div class="level-selector" id="levelSelector">
-            <h3>Kies je moeilijkheidsgraad:</h3>
+            <h3>Kies je niveau - Elk niveau bevat echte examenstijl oefeningen:</h3>
             <div class="level-buttons">
-                <button class="level-btn intro" onclick="startLevel('intro')">🌱 Introductie</button>
-                <button class="level-btn easy" onclick="startLevel('easy')">✅ Gemakkelijk</button>
-                <button class="level-btn medium" onclick="startLevel('medium')">⚡ Gemiddeld</button>
-                <button class="level-btn hard" onclick="startLevel('hard')">🔥 Moeilijk</button>
+                <button class="level-btn basis" onclick="startLevel('basis')">📋 Basis Kennis<br><small>Variabelen, notatie, eenvoudige berekeningen</small></button>
+                <button class="level-btn analyse" onclick="startLevel('analyse')">🔍 Analyse & Uitleg<br><small>Domein, bereik, tekenverloop</small></button>
+                <button class="level-btn toepassing" onclick="startLevel('toepassing')">⚡ Toepassingen<br><small>Complexe vraagstukken, modelleren</small></button>
+                <button class="level-btn expert" onclick="startLevel('expert')">🔥 Expert Niveau<br><small>Samengestelde opgaven, parameters</small></button>
             </div>
         </div>
 
         <div class="exercise-container" id="exerciseContainer">
+            <div class="exercise-number" id="exerciseNumber"></div>
             <div class="exercise-title" id="exerciseTitle"></div>
             <div class="exercise-content" id="exerciseContent"></div>
             <div id="answerSection"></div>
             <div class="feedback" id="feedback"></div>
             <div class="button-group">
-                <button class="btn primary" id="submitBtn" onclick="checkAnswer()">Controleer Antwoord</button>
-                <button class="btn secondary" id="nextBtn" onclick="nextExercise()" style="display: none;">Volgende Vraag</button>
+                <button class="btn primary" id="checkBtn" onclick="checkAnswer()">Controleer Mijn Antwoord</button>
+                <button class="btn secondary" id="hintBtn" onclick="showHint()" style="display: none;">💡 Kleine Hint</button>
+                <button class="btn success" id="nextBtn" onclick="nextExercise()" style="display: none;">Volgende Oefening</button>
+                <button class="btn danger" id="giveUpBtn" onclick="giveUp()" style="display: none;">Ik Geef Op</button>
                 <button class="btn secondary" onclick="showLevelSelector()">Terug naar Niveaus</button>
             </div>
         </div>
@@ -348,159 +416,372 @@
 
     <script>
         const exercises = {
-            intro: [
+            basis: [
                 {
-                    title: "Wat is een functie?",
-                    content: "Een functie is een verband tussen twee variabelen waarbij voor elke invoerwaarde hoogstens één uitvoerwaarde bestaat.<br><br>Gegeven: Een ballon stijgt 15 meter per minuut. De hoogte h (in meter) hangt af van de tijd t (in minuten).<br><br><div class='math-expression'>h = 15t</div>",
-                    question: "Als de ballon 4 minuten stijgt, wat is dan de hoogte?",
-                    type: "input",
-                    answer: "60",
-                    explanation: "h = 15 × 4 = 60 meter. De functie h = 15t betekent dat voor elke minuut (t) de hoogte (h) 15 meter toeneemt."
+                    title: "Afhankelijke en Onafhankelijke Variabelen Herkennen",
+                    content: `Thomas en Sarah organiseren een schoolfeest. De kosten voor de zaal zijn €150 plus €8 per persoon voor eten en drinken.
+                    
+                    <div class="thinking-questions">
+                        <strong>Denk na over:</strong><br>
+                        • Wat kun je zelf kiezen/bepalen in deze situatie?<br>
+                        • Wat gebeurt er automatisch als gevolg van jouw keuze?<br>
+                        • Welke variabele is de OORZAAK en welke het GEVOLG?
+                    </div>`,
+                    parts: [
+                        "Wat is de onafhankelijke variabele?",
+                        "Wat is de afhankelijke variabele?", 
+                        "Schrijf de functie k(p) = ..."
+                    ],
+                    type: "multi_input",
+                    answers: ["aantal personen", "kosten", "8p + 150"],
+                    hint: "De onafhankelijke variabele is wat JIJ beslist. De afhankelijke variabele hangt af van jouw beslissing."
                 },
                 {
-                    title: "Functienotatie begrijpen",
-                    content: "In functienotatie schrijven we f(x) = 3x + 5.<br><br>Dit betekent: voor elke invoerwaarde x, bereken je 3x + 5.",
-                    question: "Bereken f(2) als f(x) = 3x + 5",
-                    type: "input",
-                    answer: "11",
-                    explanation: "f(2) = 3 × 2 + 5 = 6 + 5 = 11. We vervangen x door 2 in de formule."
+                    title: "Functienotatie en Berekeningen",
+                    content: `Emma koopt fruit op de markt. De prijs hangt af van het gewicht volgens:
+                    
+                    <div class="math-expression">p(w) = 3,50w + 1,25</div>
+                    
+                    waarbij p de prijs is in euro en w het gewicht in kilogram.
+                    
+                    <div class="paper-reminder">📝 Maak deze berekeningen op papier!</div>`,
+                    parts: [
+                        "Bereken p(2). Wat betekent dit?",
+                        "Voor welk gewicht betaal je €12,00?",
+                        "Wat betekent het getal 1,25 in deze formule?"
+                    ],
+                    type: "multi_input",
+                    answers: ["8.25", "3", "basiskosten"],
+                    hint: "p(2) betekent: vervang w door 2 in de formule. Voor €12,00: los op 3,50w + 1,25 = 12."
                 },
                 {
-                    title: "Afhankelijke en onafhankelijke variabelen",
-                    content: "Bij een taxirit in Antwerpen betaal je €2,95 instapgeld plus €2,10 per kilometer.<br><br>Het bedrag b (euro) hangt af van de afstand a (km).<br><br><div class='math-expression'>b = 2,10a + 2,95</div>",
-                    question: "Welke variabele is de onafhankelijke variabele?",
+                    title: "Functie uit Tabel Bepalen",
+                    content: `Liam houdt bij hoeveel hij verdient met bijles geven:
+                    
+                    <div class="table-exercise">
+                        <table class="example-table">
+                            <tr><th>Aantal uren (u)</th><th>1</th><th>2</th><th>3</th><th>5</th></tr>
+                            <tr><th>Verdiend bedrag v(u)</th><th>€22</th><th>€35</th><th>€48</th><th>€74</th></tr>
+                        </table>
+                    </div>
+                    
+                    <div class="paper-reminder">📝 Zoek het patroon! Maak berekeningen op papier.</div>`,
+                    parts: [
+                        "Hoeveel verdient Liam per uur?",
+                        "Zijn er opstartkosten? Zo ja, hoeveel?",
+                        "Schrijf de functie v(u) = ..."
+                    ],
+                    type: "multi_input", 
+                    answers: ["13", "9", "13u + 9"],
+                    hint: "Kijk naar het verschil tussen opeenvolgende bedragen. Check of het lineair is."
+                },
+                {
+                    title: "Recht of Omgekeerd Evenredig?",
+                    content: `Gegeven zijn de volgende formules. Bepaal voor elke formule of het verband recht evenredig, omgekeerd evenredig, of geen van beide is.
+                    
+                    <div class="question-parts">
+                        <div class="part">a) f(x) = 120/x</div>
+                        <div class="part">b) g(x) = 5x</div>
+                        <div class="part">c) h(x) = 2x + 10</div>
+                        <div class="part">d) k(x) = 80/x</div>
+                    </div>
+                    
+                    <div class="thinking-questions">
+                        <strong>Onthoud:</strong><br>
+                        • Recht evenredig: y = cx (door de oorsprong)<br>
+                        • Omgekeerd evenredig: y = c/x<br>
+                        • Anders: geen van beide
+                    </div>`,
                     type: "multiple",
-                    choices: ["De afstand a (km)", "Het bedrag b (euro)", "Het instapgeld €2,95", "De prijs per km €2,10"],
+                    choices: [
+                        "a) omgekeerd, b) recht, c) geen, d) omgekeerd",
+                        "a) recht, b) omgekeerd, c) recht, d) geen", 
+                        "a) geen, b) recht, c) omgekeerd, d) recht",
+                        "a) omgekeerd, b) geen, c) recht, d) omgekeerd"
+                    ],
                     answer: 0,
-                    explanation: "De afstand a is de onafhankelijke variabele omdat je deze zelf kiest. Het bedrag b hangt hiervan af, dus is de afhankelijke variabele."
+                    hint: "Let op de vorm van de functie. Staat er alleen cx of c/x, of is er nog iets bij opgeteld?"
                 }
             ],
-            easy: [
+            analyse: [
                 {
-                    title: "Functiewaarden berekenen",
-                    content: "Emma, Liam en Sophie gaan samen boodschappen doen. Emma koopt 3 appels voor €1,50 per stuk.<br><br><div class='math-expression'>f(x) = 1,50x</div><br>waarbij x het aantal appels is.",
-                    question: "Hoeveel betaalt Emma voor haar 3 appels?",
-                    type: "input",
-                    answer: "4.5",
-                    explanation: "f(3) = 1,50 × 3 = €4,50. Emma betaalt €4,50 voor 3 appels."
+                    title: "Domein en Bereik Bepalen uit Grafiek",
+                    content: `Op de website van een weerstation zie je deze grafiek van de temperatuur tijdens een dag:
+                    
+                    <div class="graph-instruction">
+                        📈 <strong>TEKEN OP PAPIER:</strong><br>
+                        Een grafiek waarbij:<br>
+                        • x-as: tijd van 0 tot 24 uur<br>
+                        • y-as: temperatuur van -5°C tot 15°C<br>
+                        • De functie start bij (0, 2), stijgt tot maximum (12, 14), daalt naar (24, 0)<br>
+                        • De grafiek is een vloeiende curve
+                    </div>`,
+                    parts: [
+                        "Wat is het domein van deze functie?",
+                        "Wat is het bereik van deze functie?",
+                        "Op welk tijdstip is de temperatuur het hoogst?"
+                    ],
+                    type: "multi_input",
+                    answers: ["[0, 24]", "[-5, 15]", "12"],
+                    hint: "Domein = alle mogelijke x-waarden (horizontaal). Bereik = alle mogelijke y-waarden (verticaal)."
                 },
                 {
-                    title: "Functie uit tabel aflezen",
-                    content: "Thomas houdt bij hoeveel geld hij spaart per maand:<br><br><table style='border-collapse: collapse; margin: 10px 0;'><tr style='background: #f7fafc;'><th style='border: 1px solid #e2e8f0; padding: 8px;'>Maand (x)</th><th style='border: 1px solid #e2e8f0; padding: 8px;'>Gespaarde bedrag f(x)</th></tr><tr><td style='border: 1px solid #e2e8f0; padding: 8px;'>1</td><td style='border: 1px solid #e2e8f0; padding: 8px;'>€25</td></tr><tr><td style='border: 1px solid #e2e8f0; padding: 8px;'>2</td><td style='border: 1px solid #e2e8f0; padding: 8px;'>€50</td></tr><tr><td style='border: 1px solid #e2e8f0; padding: 8px;'>3</td><td style='border: 1px solid #e2e8f0; padding: 8px;'>€75</td></tr><tr><td style='border: 1px solid #e2e8f0; padding: 8px;'>4</td><td style='border: 1px solid #e2e8f0; padding: 8px;'>€100</td></tr></table>",
-                    question: "Hoeveel heeft Thomas gespaard na 3 maanden?",
-                    type: "input",
-                    answer: "75",
-                    explanation: "Uit de tabel lezen we af: f(3) = €75. Na 3 maanden heeft Thomas €75 gespaard."
+                    title: "Nulwaarden en Tekenverloop",
+                    content: `De winstfunctie van een startup is:
+                    
+                    <div class="math-expression">w(t) = -t² + 8t - 12</div>
+                    
+                    waarbij w de winst is (× €1000) en t de tijd in maanden.
+                    
+                    <div class="paper-reminder">📝 Los de vergelijking w(t) = 0 op! Gebruik de abc-formule of ontbinden.</div>`,
+                    parts: [
+                        "Bereken de nulwaarden (wanneer winst = 0)",
+                        "In welke maanden maakt het bedrijf winst?",
+                        "In welke maand is de winst maximaal?"
+                    ],
+                    type: "multi_input",
+                    answers: ["2 en 6", "tussen 2 en 6", "4"],
+                    hint: "Voor nulwaarden: w(t) = 0. Voor maximum: gebruik symmetrie van parabool of afgeleide."
                 },
                 {
-                    title: "Lineaire functie herkennen",
-                    content: "Sarah en David organiseren een schoolfeest. De kosten voor de zaal zijn €100 plus €15 per persoon.",
-                    question: "Welke formule past bij deze situatie? (k = kosten, p = aantal personen)",
-                    type: "multiple",
-                    choices: ["k = 15p + 100", "k = 100p + 15", "k = 15p", "k = 100 + 15"],
-                    answer: 0,
-                    explanation: "k = 15p + 100. Er zijn vaste kosten van €100 plus €15 per persoon (15p)."
+                    title: "Functieverloop Analyseren",
+                    content: `Een bal wordt omhoog gegooid. De hoogte h (in meter) na t seconden is:
+                    
+                    <div class="math-expression">h(t) = -5t² + 20t + 1</div>
+                    
+                    <div class="thinking-questions">
+                        <strong>Analyseer stap voor stap:</strong><br>
+                        • Wat gebeurt er op t = 0?<br>
+                        • Wanneer raakt de bal de grond?<br>
+                        • Wat is de maximale hoogte?
+                    </div>`,
+                    parts: [
+                        "Wat is de beginhoogte (t = 0)?",
+                        "Na hoeveel seconden is de bal op maximale hoogte?",
+                        "Wat is de maximale hoogte?"
+                    ],
+                    type: "multi_input",
+                    answers: ["1", "2", "21"],
+                    hint: "Voor maximum: t = -b/(2a). Bereken dan h(t_max)."
                 },
                 {
-                    title: "Nulwaarde vinden",
-                    content: "Een bedrijf heeft de volgende winstfunctie:<br><br><div class='math-expression'>w(t) = 200t - 1000</div><br>waarbij w de winst is in euro's en t de tijd in maanden.",
-                    question: "Na hoeveel maanden is de winst 0 euro (break-even punt)?",
-                    type: "input",
-                    answer: "5",
-                    explanation: "Voor break-even: w(t) = 0<br>200t - 1000 = 0<br>200t = 1000<br>t = 5 maanden"
+                    title: "Domein Bepalen met Beperkingen",
+                    content: `Een rechthoekige tuin heeft een omtrek van 60 meter. De breedte is b meter.
+                    
+                    <div class="math-expression">A(b) = b(30 - b)</div>
+                    
+                    Deze formule geeft de oppervlakte van de tuin.
+                    
+                    <div class="thinking-questions">
+                        <strong>Denk na:</strong><br>
+                        • Wat zijn realistische waarden voor de breedte?<br>
+                        • Kan de breedte 0 zijn? 50 meter?<br>
+                        • Wat is logisch in deze situatie?
+                    </div>`,
+                    parts: [
+                        "Wat is het mathematische domein?",
+                        "Wat is het praktische domein?",
+                        "Bij welke breedte is de oppervlakte maximaal?"
+                    ],
+                    type: "multi_input",
+                    answers: ["alle reële getallen", "(0, 30)", "15"],
+                    hint: "Mathematisch domein = alle mogelijke waarden. Praktisch domein = realistische waarden."
                 }
             ],
-            medium: [
+            toepassing: [
                 {
-                    title: "Complexe functieberekening",
-                    content: "Een racewagen rijdt een testronde op het circuit van Francorchamps. De snelheid v (km/h) hangt af van de tijd t (seconden) volgens:<br><br><div class='math-expression'>v(t) = -2t² + 80t + 100</div>",
-                    question: "Wat is de snelheid na 10 seconden?",
-                    type: "input",
-                    answer: "700",
-                    explanation: "v(10) = -2(10)² + 80(10) + 100 = -2(100) + 800 + 100 = -200 + 800 + 100 = 700 km/h"
+                    title: "Samengesteld Vraagstuk - Evenementenorganisatie",
+                    content: `Lisa en Mark organiseren een zomerfestival. Ze hebben de volgende kosten:
+                    
+                    <div class="question-parts">
+                        <div class="part">• Vaste kosten: €5000 (podium, vergunningen, etc.)</div>
+                        <div class="part">• Variabele kosten: €15 per bezoeker (beveiliging, catering)</div>
+                        <div class="part">• Inkomsten: €25 per ticket</div>
+                    </div>
+                    
+                    <div class="paper-reminder">📝 Stel alle functies op! Maak een tabel en grafiek voor break-even analyse.</div>`,
+                    parts: [
+                        "Stel de kostenfunctie K(x) op",
+                        "Stel de inkomstenfunctie I(x) op", 
+                        "Bereken het break-even punt",
+                        "Hoeveel winst maken ze bij 800 bezoekers?"
+                    ],
+                    type: "multi_input",
+                    answers: ["15x + 5000", "25x", "500", "3000"],
+                    hint: "Break-even: K(x) = I(x). Winst = Inkomsten - Kosten."
                 },
                 {
-                    title: "Domein en bereik bepalen",
-                    content: "Anna, Ben en Chris organiseren een sponsored loop. Voor elke ronde van 400m krijgen ze €2 sponsorgeld. Ze kunnen maximaal 20 ronden lopen.<br><br><div class='math-expression'>f(r) = 2r</div><br>waarbij r het aantal ronden is.",
-                    question: "Wat is het domein van deze functie?",
-                    type: "multiple",
-                    choices: ["[0, 20]", "[0, 40]", "[2, 40]", "[1, 20]"],
-                    answer: 0,
-                    explanation: "Het domein is [0, 20] omdat ze minimaal 0 en maximaal 20 ronden kunnen lopen."
+                    title: "Optimalisatievraagstuk",
+                    content: `Een boer wil een rechthoekige wei afrasteren langs een rivier. Hij heeft 240 meter hekwerk. De rivier vormt één zijde, dus die hoeft niet afgerasterd.
+                    
+                    <div class="graph-instruction">
+                        📈 <strong>MAAK EEN SCHETS:</strong><br>
+                        Teken de situatie en label de zijden. Stel x = breedte loodrecht op rivier.
+                    </div>`,
+                    parts: [
+                        "Druk de lengte uit in x",
+                        "Stel de oppervlaktefunctie A(x) op",
+                        "Wat is het domein van x?",
+                        "Bij welke afmetingen is de oppervlakte maximaal?"
+                    ],
+                    type: "multi_input", 
+                    answers: ["240 - 2x", "x(240 - 2x)", "(0, 120)", "60 bij 120"],
+                    hint: "Totaal hekwerk = 2x + lengte = 240. Voor maximum: A'(x) = 0."
                 },
                 {
-                    title: "Tekenverloop analyseren",
-                    content: "De temperatuur tijdens een winterdag wordt gegeven door:<br><br><div class='math-expression'>T(t) = -t² + 6t - 5</div><br>waarbij T de temperatuur is (°C) en t de tijd in uren na middernacht.",
-                    question: "Tussen welke tijdstippen is de temperatuur positief (boven 0°C)?",
-                    type: "multiple",
-                    choices: ["Tussen 1u en 5u", "Tussen 0u en 6u", "Tussen 2u en 4u", "Alleen rond 3u"],
-                    answer: 0,
-                    explanation: "T(t) = 0 oplossen: -t² + 6t - 5 = 0 → t² - 6t + 5 = 0 → (t-1)(t-5) = 0 → t = 1 of t = 5. Tussen t = 1 en t = 5 is de temperatuur positief."
+                    title: "Modelleren met Kwadratische Functie",
+                    content: `Een voetbal wordt geschopt. De baan van de bal wordt beschreven door:
+                    
+                    <div class="math-expression">h(d) = -0,05d² + 2d</div>
+                    
+                    waarbij h de hoogte is in meter en d de horizontale afstand in meter.
+                    
+                    <div class="thinking-questions">
+                        <strong>Analyseer volledig:</strong><br>
+                        • Waar start en landt de bal?<br>
+                        • Wat is de maximale hoogte en waar?<br>
+                        • Hoe ver vliegt de bal?
+                    </div>`,
+                    parts: [
+                        "Op welke afstand landt de bal?",
+                        "Wat is de maximale hoogte?",
+                        "Op welke afstand bereikt de bal deze hoogte?",
+                        "Hoe hoog is de bal op 10 meter afstand?"
+                    ],
+                    type: "multi_input",
+                    answers: ["40", "20", "20", "15"],
+                    hint: "Voor landing: h(d) = 0. Voor maximum: symmetrie-as van parabool."
                 },
                 {
-                    title: "Omgekeerd evenredig verband",
-                    content: "Elena, Floor en Gabriel verdelen samen €300 prijzengeld van een wedstrijd. Hoe meer personen meedoen, hoe minder ieder krijgt.<br><br><div class='math-expression'>f(p) = 300/p</div><br>waarbij p het aantal personen is.",
-                    question: "Als er 6 personen meedoen, hoeveel krijgt elk persoon?",
-                    type: "input",
-                    answer: "50",
-                    explanation: "f(6) = 300/6 = €50 per persoon. Bij omgekeerd evenredig verband delen we het totale bedrag door het aantal personen."
+                    title: "Economisch Model - Vraag en Aanbod",
+                    content: `Een ijssalon heeft onderzocht dat de vraag naar ijsjes afhangt van de prijs:
+                    
+                    <div class="math-expression">V(p) = 200 - 5p</div>
+                    <div class="math-expression">Omzet = prijs × aantal verkocht</div>
+                    
+                    waarbij V het aantal verkochte ijsjes per dag is en p de prijs per ijsje in euro.
+                    
+                    <div class="paper-reminder">📝 Stel de omzetfunctie op en analyseer deze!</div>`,
+                    parts: [
+                        "Stel de omzetfunctie O(p) op",
+                        "Bij welke prijs is de omzet maximaal?",
+                        "Wat is de maximale omzet?",
+                        "Hoeveel ijsjes verkopen ze dan?"
+                    ],
+                    type: "multi_input",
+                    answers: ["p(200 - 5p)", "20", "2000", "100"],
+                    hint: "Omzet = prijs × aantal = p × V(p). Voor maximum: O'(p) = 0."
                 }
             ],
-            hard: [
+            expert: [
                 {
-                    title: "Samengestelde functieanalyse",
-                    content: "Het Elfstedentocht ijs heeft een dikte die afhangt van de temperatuur en tijd. De maximale belasting (in kg) van het ijs wordt gegeven door:<br><br><div class='math-expression'>f(h) = 5h²</div><br>en de veiligheidsfunctie door <div class='math-expression'>g(h) = 10h²</div><br>waarbij h de ijsdikte is in cm. Het ijs is veilig als f(h) < g(h)/2.",
-                    question: "Bij welke minimale ijsdikte kunnen 1000 kg (10 personen van ~100kg) veilig over het ijs?",
-                    type: "input",
-                    answer: "10",
-                    explanation: "Voor veiligheid: f(h) ≥ 1000 en f(h) < g(h)/2<br>5h² ≥ 1000 → h² ≥ 200 → h ≥ √200 ≈ 14.14<br>Maar ook: 5h² < 10h²/2 = 5h² (altijd waar)<br>Dus minimaal h = 15 cm, maar afgerond naar 10 voor praktische doeleinden."
+                    title: "Parameteranalyse",
+                    content: `Gegeven is de functie:
+                    
+                    <div class="math-expression">f(x) = ax² + bx + c</div>
+                    
+                    Met de voorwaarden: f(0) = 3, f(1) = 6, en f(2) = 5.
+                    
+                    <div class="thinking-questions">
+                        <strong>Los systematisch op:</strong><br>
+                        • Gebruik de voorwaarden om vergelijkingen op te stellen<br>
+                        • Los het stelsel op voor a, b, en c<br>
+                        • Controleer je antwoord
+                    </div>`,
+                    parts: [
+                        "Bepaal de waarde van c",
+                        "Bepaal de waarde van a", 
+                        "Bepaal de waarde van b",
+                        "Schrijf de complete functie"
+                    ],
+                    type: "multi_input",
+                    answers: ["3", "-2", "5", "-2x² + 5x + 3"],
+                    hint: "f(0) = c geeft direct c. Stel vergelijkingen op voor f(1) en f(2) om a en b te vinden."
                 },
                 {
-                    title: "Absolute extremen bepalen",
-                    content: "Hugo, Iris en Jasper bestuderen de winstfunctie van hun startup:<br><br><div class='math-expression'>w(m) = -m³ + 12m² - 36m + 50</div><br>waarbij w de winst is (×€1000) en m het aantal maanden na opstart.",
-                    question: "In welke maand is de winst maximaal in het eerste jaar?",
-                    type: "multiple",
-                    choices: ["Maand 2", "Maand 6", "Maand 8", "Maand 10"],
-                    answer: 1,
-                    explanation: "Voor maximum: w'(m) = -3m² + 24m - 36 = 0<br>-3(m² - 8m + 12) = 0<br>m² - 8m + 12 = 0<br>(m-2)(m-6) = 0<br>m = 2 of m = 6<br>Controle: w''(m) = -6m + 24<br>w''(2) = 12 > 0 (minimum), w''(6) = -12 < 0 (maximum)<br>Dus maximum in maand 6."
+                    title: "Samengestelde Functieanalyse",
+                    content: `Een bedrijf heeft twee afdelingen. Hun winstfuncties zijn:
+                    
+                    <div class="math-expression">A(t) = 2t³ - 12t² + 18t</div>
+                    <div class="math-expression">B(t) = -t² + 8t + 20</div>
+                    
+                    waarbij t de tijd in maanden is en de winst in duizenden euro's.
+                    
+                    <div class="paper-reminder">📝 Bereken afgeleiden! Analyseer extremen en gedrag.</div>`,
+                    parts: [
+                        "In welke maand heeft afdeling A maximum winst?",
+                        "Wat is de winst van afdeling B in maand 3?",
+                        "In welke maand is de totale winst A(t) + B(t) gelijk aan €50.000?",
+                        "Welke afdeling groeit sneller in maand 2?"
+                    ],
+                    type: "multi_input",
+                    answers: ["3", "35", "4", "A"],
+                    hint: "Voor extremen: A'(t) = 0. Voor groei: vergelijk A'(2) en B'(2)."
                 },
                 {
-                    title: "Beeld en definitiebereik",
-                    content: "Kim, Lars en Mila onderzoeken een nieuwe functie:<br><br><div class='math-expression'>f(x) = (x² - 4)/(x + 2)</div>",
-                    question: "Voor welke x-waarde is deze functie NIET gedefinieerd?",
-                    type: "input",
-                    answer: "-2",
-                    explanation: "De functie is niet gedefinieerd wanneer de noemer 0 wordt:<br>x + 2 = 0 → x = -2<br>Bij x = -2 delen we door 0, wat wiskundig niet toegestaan is."
+                    title: "Rationaal Functieonderzoek",
+                    content: `Onderzoek de functie:
+                    
+                    <div class="math-expression">g(x) = (x² - 4)/(x + 2)</div>
+                    
+                    <div class="thinking-questions">
+                        <strong>Volledig onderzoek:</strong><br>
+                        • Domein en asymptoten<br>
+                        • Vereenvoudiging (als mogelijk)<br>
+                        • Nulwaarden en tekenverloop<br>
+                        • Grafiekgedrag
+                    </div>`,
+                    parts: [
+                        "Voor welke x-waarde is g(x) niet gedefinieerd?",
+                        "Vereenvoudig g(x) (na wegdelen)",
+                        "Wat is de nulwaarde van g(x)?", 
+                        "Wat gebeurt er bij x = -2?"
+                    ],
+                    type: "multi_input",
+                    answers: ["-2", "x - 2", "2", "gat in grafiek"],
+                    hint: "Factor eerst de teller. Let op: x² - 4 = (x-2)(x+2). Er valt weg!"
                 },
                 {
-                    title: "Parameterfuncties",
-                    content: "Nina, Oscar en Petra bestuderen de functie:<br><br><div class='math-expression'>f(x) = ax² + bx + c</div><br>Ze weten dat f(0) = 3, f(1) = 6 en f(2) = 11.",
-                    question: "Wat is de waarde van parameter a?",
-                    type: "input",
-                    answer: "1",
-                    explanation: "Uit de voorwaarden:<br>f(0) = c = 3<br>f(1) = a + b + c = 6 → a + b = 3<br>f(2) = 4a + 2b + c = 11 → 4a + 2b = 8 → 2a + b = 4<br>Oplossen: (2a + b) - (a + b) = 4 - 3 → a = 1"
+                    title: "Complexe Modelleringsopdracht",
+                    content: `Een watreservoir heeft een inlaat en uitlaat. De waterinhoud W (in m³) hangt af van de tijd t (in uren) volgens:
+                    
+                    <div class="math-expression">W(t) = 1000 + 50t - 2t²</div>
+                    
+                    voor 0 ≤ t ≤ 24.
+                    
+                    <div class="paper-reminder">📝 Maak een volledige analyse: grafiek, extremen, praktische betekenis!</div>`,
+                    parts: [
+                        "Hoeveel water zit er initieel in het reservoir?",
+                        "Op welk tijdstip is de waterinhoud maximaal?",
+                        "Wat is de maximale waterinhoud?",
+                        "Na hoeveel uur is het reservoir leeg?"
+                    ],
+                    type: "multi_input",
+                    answers: ["1000", "12.5", "1312.5", "25"],
+                    hint: "Voor maximum: W'(t) = 0. Voor leeg: W(t) = 0. Let op het domein!"
                 }
             ]
         };
 
         let currentLevel = '';
         let currentExerciseIndex = 0;
-        let score = 0;
+        let attempts = 0;
         let selectedAnswer = null;
 
         function startLevel(level) {
             currentLevel = level;
             currentExerciseIndex = 0;
-            score = 0;
+            attempts = 0;
             
-            document.getElementById('currentLevel').textContent = {
-                'intro': 'Introductie',
-                'easy': 'Gemakkelijk', 
-                'medium': 'Gemiddeld',
-                'hard': 'Moeilijk'
-            }[level];
+            const levelNames = {
+                'basis': 'Basis Kennis',
+                'analyse': 'Analyse & Uitleg', 
+                'toepassing': 'Toepassingen',
+                'expert': 'Expert Niveau'
+            };
             
-            document.getElementById('totalQuestions').textContent = exercises[level].length;
+            document.getElementById('currentLevel').textContent = levelNames[level];
+            document.getElementById('totalExercises').textContent = exercises[level].length;
             updateProgress();
             
             document.getElementById('levelSelector').style.display = 'none';
@@ -511,20 +792,29 @@
 
         function loadExercise() {
             const exercise = exercises[currentLevel][currentExerciseIndex];
+            attempts = 0;
             
+            document.getElementById('exerciseNumber').textContent = `Oefening ${currentExerciseIndex + 1}`;
             document.getElementById('exerciseTitle').textContent = exercise.title;
             document.getElementById('exerciseContent').innerHTML = exercise.content;
             
             const answerSection = document.getElementById('answerSection');
             selectedAnswer = null;
             
-            if (exercise.type === 'input') {
-                answerSection.innerHTML = `
-                    <p><strong>Vraag:</strong> ${exercise.question}</p>
-                    <input type="text" class="answer-input" id="userAnswer" placeholder="Typ je antwoord hier...">
-                `;
+            if (exercise.type === 'multi_input') {
+                let inputsHtml = '<div class="question-parts">';
+                exercise.parts.forEach((part, index) => {
+                    inputsHtml += `
+                        <div class="part">
+                            <strong>${String.fromCharCode(97 + index)}) ${part}</strong><br>
+                            <input type="text" class="answer-input" id="answer${index}" placeholder="Typ je antwoord...">
+                        </div>
+                    `;
+                });
+                inputsHtml += '</div>';
+                answerSection.innerHTML = inputsHtml;
             } else if (exercise.type === 'multiple') {
-                let choicesHtml = `<p><strong>Vraag:</strong> ${exercise.question}</p><div class="multiple-choice">`;
+                let choicesHtml = '<div class="multiple-choice">';
                 exercise.choices.forEach((choice, index) => {
                     choicesHtml += `<button class="choice-btn" onclick="selectChoice(${index})">${choice}</button>`;
                 });
@@ -532,9 +822,16 @@
                 answerSection.innerHTML = choicesHtml;
             }
             
+            // Reset buttons
             document.getElementById('feedback').style.display = 'none';
-            document.getElementById('submitBtn').style.display = 'inline-block';
+            document.getElementById('checkBtn').style.display = 'inline-block';
+            document.getElementById('hintBtn').style.display = 'none';
             document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('giveUpBtn').style.display = 'none';
+            
+            // Hide hint box
+            const hintBox = document.querySelector('.hint-box');
+            if (hintBox) hintBox.style.display = 'none';
         }
 
         function selectChoice(index) {
@@ -547,31 +844,90 @@
         function checkAnswer() {
             const exercise = exercises[currentLevel][currentExerciseIndex];
             const feedback = document.getElementById('feedback');
-            let userAnswer;
-            let isCorrect = false;
+            attempts++;
             
-            if (exercise.type === 'input') {
-                userAnswer = document.getElementById('userAnswer').value.trim();
-                isCorrect = parseFloat(userAnswer) === parseFloat(exercise.answer) || userAnswer === exercise.answer;
+            let userAnswers = [];
+            let allCorrect = true;
+            
+            if (exercise.type === 'multi_input') {
+                exercise.parts.forEach((_, index) => {
+                    const input = document.getElementById(`answer${index}`);
+                    const userAnswer = input.value.trim().toLowerCase();
+                    const correctAnswer = exercise.answers[index].toLowerCase();
+                    userAnswers.push(userAnswer);
+                    
+                    if (userAnswer !== correctAnswer) {
+                        allCorrect = false;
+                        input.style.borderColor = '#e53e3e';
+                    } else {
+                        input.style.borderColor = '#38a169';
+                    }
+                });
             } else if (exercise.type === 'multiple') {
-                userAnswer = selectedAnswer;
-                isCorrect = userAnswer === exercise.answer;
+                allCorrect = selectedAnswer === exercise.answer;
             }
             
-            if (isCorrect) {
-                score++;
+            if (allCorrect) {
                 feedback.className = 'feedback correct';
-                feedback.innerHTML = `<strong>Correct!</strong> 🎉<div class="explanation">${exercise.explanation}</div>`;
+                feedback.innerHTML = `
+                    <strong>🎉 Excellent! Volledig correct!</strong><br>
+                    Je hebt dit in ${attempts} poging${attempts > 1 ? 'en' : ''} opgelost. 
+                    ${attempts === 1 ? 'Perfect - eerste keer goed!' : 'Goed blijven proberen!'}
+                `;
+                feedback.style.display = 'block';
+                
+                document.getElementById('checkBtn').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                document.getElementById('hintBtn').style.display = 'none';
+                document.getElementById('giveUpBtn').style.display = 'none';
+                
             } else {
                 feedback.className = 'feedback incorrect';
-                feedback.innerHTML = `<strong>Niet correct.</strong> 😞<div class="explanation"><strong>Uitleg:</strong> ${exercise.explanation}</div>`;
+                feedback.innerHTML = `
+                    <strong>❌ Niet helemaal goed.</strong><br>
+                    ${exercise.type === 'multi_input' ? 'Controleer de delen met een rode rand.' : 'Probeer opnieuw.'}
+                    <br><em>Denk stap voor stap na en controleer je berekeningen.</em>
+                `;
+                feedback.style.display = 'block';
+                
+                if (attempts >= 2) {
+                    document.getElementById('hintBtn').style.display = 'inline-block';
+                }
+                if (attempts >= 3) {
+                    document.getElementById('giveUpBtn').style.display = 'inline-block';
+                }
             }
+        }
+
+        function showHint() {
+            const exercise = exercises[currentLevel][currentExerciseIndex];
+            const feedback = document.getElementById('feedback');
             
-            feedback.style.display = 'block';
-            document.getElementById('submitBtn').style.display = 'none';
+            feedback.className = 'feedback thinking';
+            feedback.innerHTML = `
+                <strong>💡 Hint:</strong><br>
+                ${exercise.hint}
+                <br><br><em>Probeer nu opnieuw met deze aanwijzing!</em>
+            `;
+            
+            document.getElementById('hintBtn').style.display = 'none';
+        }
+
+        function giveUp() {
+            const exercise = exercises[currentLevel][currentExerciseIndex];
+            const feedback = document.getElementById('feedback');
+            
+            feedback.className = 'feedback incorrect';
+            feedback.innerHTML = `
+                <strong>🤔 Oké, laten we doorgaan.</strong><br>
+                Dit was een moeilijke vraag. Kijk na het examen de uitwerking na in je boek of vraag je docent.<br>
+                <em>Niet opgeven - de volgende ga je vast wel goed!</em>
+            `;
+            
+            document.getElementById('checkBtn').style.display = 'none';
+            document.getElementById('hintBtn').style.display = 'none';
+            document.getElementById('giveUpBtn').style.display = 'none';
             document.getElementById('nextBtn').style.display = 'inline-block';
-            
-            updateProgress();
         }
 
         function nextExercise() {
@@ -581,45 +937,43 @@
                 showFinalResults();
             } else {
                 loadExercise();
+                updateProgress();
             }
         }
 
         function showFinalResults() {
-            const total = exercises[currentLevel].length;
-            const percentage = Math.round((score / total) * 100);
-            
-            let message = '';
-            if (percentage >= 90) {
-                message = 'Uitstekend! 🌟 Je bent klaar voor het examen!';
-            } else if (percentage >= 75) {
-                message = 'Goed werk! 👍 Nog een beetje oefenen en je zit goed.';
-            } else if (percentage >= 60) {
-                message = 'Niet slecht! 📚 Bestudeer de uitleg en probeer opnieuw.';
-            } else {
-                message = 'Niet getreurd! 💪 Oefen nog eens en je wordt beter.';
-            }
-            
             document.getElementById('exerciseContent').innerHTML = `
-                <div style="text-align: center; padding: 30px;">
-                    <h2>Niveau Voltooid!</h2>
-                    <p style="font-size: 1.5em; margin: 20px 0;">Score: ${score}/${total} (${percentage}%)</p>
-                    <p style="font-size: 1.2em; color: #4a5568;">${message}</p>
+                <div style="text-align: center; padding: 40px;">
+                    <h2>🎯 Niveau "${document.getElementById('currentLevel').textContent}" Voltooid!</h2>
+                    <p style="font-size: 1.3em; margin: 25px 0; color: #4a5568;">
+                        Je hebt alle oefeningen van dit niveau doorlopen!
+                    </p>
+                    <div class="paper-reminder">
+                        📚 <strong>Volgende stap:</strong> Controleer je antwoorden in je boek, 
+                        bespreek moeilijke onderdelen met je docent, en probeer een hoger niveau!
+                    </div>
+                    <p style="font-size: 1.1em; color: #2d3748; margin-top: 20px;">
+                        <strong>Onthoud:</strong> Echte examens geven ook geen directe antwoorden. 
+                        Je bent goed bezig met deze manier van oefenen! 💪
+                    </p>
                 </div>
             `;
             
             document.getElementById('answerSection').innerHTML = '';
             document.getElementById('feedback').style.display = 'none';
-            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('checkBtn').style.display = 'none';
             document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('hintBtn').style.display = 'none';
+            document.getElementById('giveUpBtn').style.display = 'none';
         }
 
         function updateProgress() {
             const total = exercises[currentLevel]?.length || 1;
-            const current = Math.min(score, total);
+            const current = currentExerciseIndex;
             const percentage = (current / total) * 100;
             
             document.getElementById('progressFill').style.width = percentage + '%';
-            document.getElementById('currentScore').textContent = score;
+            document.getElementById('currentExercise').textContent = current + 1;
         }
 
         function showLevelSelector() {
@@ -627,9 +981,9 @@
             document.getElementById('exerciseContainer').classList.remove('active');
         }
 
-        // Enter key support for input fields
+        // Enter key support
         document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && document.getElementById('submitBtn').style.display !== 'none') {
+            if (e.key === 'Enter' && document.getElementById('checkBtn').style.display !== 'none') {
                 checkAnswer();
             }
         });
